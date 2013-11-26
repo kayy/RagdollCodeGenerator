@@ -37,8 +37,13 @@ using UnityEditor;
 /// wizard. The selected bone and all its children will be traversed and methods for creating colliders, rigidbodies
 /// and character joints are created.
 /// </summary>
-public static class RagdollCodeGenerator  {
-	
+public static class RagdollCodeGenerator  
+{
+	/// <summary>
+	/// Number of steps to use in GetPath when looking up the root bone.
+	/// </summary>
+	const int MaxModelDepth = 40;
+
 	public static string resourcesDir = "Scripts";
 	
 	/// <summary>
@@ -461,7 +466,7 @@ public static class RagdollCodeGenerator  {
 		string boneName = childTransform.name;
 		boneName.Replace (" (UnityEngine.Rigidbody)", "");
 		string path = boneName;
-		for (int i = 0; childTransform.transform.parent != null && i < 20; i++) {
+		for (int i = 0; childTransform.transform.parent != null && i < MaxModelDepth; i++) {
 			string parentName = childTransform.transform.parent.name;
 			parentName.Replace (" (UnityEngine.Rigidbody)", "");
 			path = parentName + "/" + path;
